@@ -16,9 +16,28 @@ try:
         
         # 페이지 열기
         page = context.new_page()
-        blog_url = "https://blog.naver.com/gghjkll777"  # 블로그 URL
+        blog_url = "https://blog.naver.com/fastdesign"  # 블로그 URL
         page.goto(blog_url)
         print("블로그 페이지에 접속했습니다.")
+        
+        # 상단 메뉴에서 "블로그" 클릭
+        try:
+            menu_selector = "iframe#mainFrame"  # mainFrame 내부 접근
+            page.wait_for_selector(menu_selector, timeout=10000)  # 10초 대기
+            iframe = page.frame(name="mainFrame")
+            
+            blog_menu_selector = "a[href*='PostList.naver']"  # 블로그 메뉴 링크 선택
+            iframe.wait_for_selector(blog_menu_selector, timeout=10000)
+            blog_menu = iframe.query_selector(blog_menu_selector)
+            if blog_menu:
+                blog_menu.click()
+                time.sleep(5)  # 페이지가 로드될 시간을 주기 위해 대기
+                print("'블로그' 메뉴를 클릭하여 블로그 목록 페이지로 이동했습니다.")
+            else:
+                print("'블로그' 메뉴를 찾지 못했습니다.")
+        except Exception as e:
+            print(f"'블로그' 메뉴 클릭에 실패했습니다: {e}")
+            raise e
 
         # iframe 로드 대기 및 접근
         try:

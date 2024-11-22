@@ -16,10 +16,10 @@ try:
         
         # 페이지 열기
         page = context.new_page()
-        blog_url = "https://blog.naver.com/gghjkll777"  # 블로그 URL
+        blog_url = "https://blog.naver.com/elps_ip"  # 블로그 URL
         page.goto(blog_url)
         print("블로그 페이지에 접속했습니다.")
-
+        
         # iframe 로드 대기 및 접근
         try:
             page.wait_for_selector("iframe#mainFrame", timeout=20000)  # 대기 시간을 20초로 증가
@@ -27,6 +27,21 @@ try:
             print("iframe에 접근했습니다.")
         except Exception as e:
             print(f"iframe 로드에 실패했습니다: {e}")
+            raise e
+
+        # 상단 블로그 버튼 클릭
+        try:
+            blog_button_selector = "a[href*='PostList.naver'][class*='itemfont']"  # '블로그' 버튼 선택자
+            iframe.wait_for_selector(blog_button_selector, timeout=10000)  # 10초 대기
+            blog_button = iframe.query_selector(blog_button_selector)
+            if blog_button:
+                blog_button.click()
+                time.sleep(5)  # 페이지가 로드될 시간을 주기 위해 대기
+                print("'블로그' 버튼을 클릭했습니다.")
+            else:
+                print("'블로그' 버튼을 찾지 못했습니다.")
+        except Exception as e:
+            print(f"'블로그' 버튼 클릭에 실패했습니다: {e}")
             raise e
 
         # '목록열기' 버튼 클릭
@@ -41,7 +56,7 @@ try:
         except Exception as e:
             print(f"'목록열기' 버튼 클릭에 실패했습니다: {e}")
             raise e
-
+        
         # 게시글 수집
         current_page = 1
         max_page_reached = False

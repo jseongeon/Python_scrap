@@ -16,10 +16,10 @@ try:
         
         # 페이지 열기
         page = context.new_page()
-        blog_url = "https://blog.naver.com/gghjkll777"  # 블로그 URL
+        blog_url = "https://blog.naver.com/kazena"  # 블로그 URL
         page.goto(blog_url)
         print("블로그 페이지에 접속했습니다.")
-
+        
         # iframe 로드 대기 및 접근
         try:
             page.wait_for_selector("iframe#mainFrame", timeout=20000)  # 대기 시간을 20초로 증가
@@ -29,17 +29,20 @@ try:
             print(f"iframe 로드에 실패했습니다: {e}")
             raise e
 
-        # '목록열기' 버튼 클릭
+        # 좌측 카테고리에서 '전체보기' 클릭
         try:
-            open_list_button = iframe.query_selector("a.btn_openlist span#toplistSpanBlind")  # '목록열기' 버튼
-            if open_list_button and open_list_button.inner_text() == "목록열기":
-                open_list_button.click()
-                time.sleep(2)  # 목록 로드 대기
-                print("'목록열기' 버튼을 클릭했습니다.")
+            # "전체보기" 버튼의 id를 사용하여 선택
+            all_posts_button_selector = "#category0"  # '전체보기' 버튼 선택자
+            iframe.wait_for_selector(all_posts_button_selector, timeout=10000)  # 10초 대기
+            all_posts_button = iframe.query_selector(all_posts_button_selector)
+            if all_posts_button:
+                all_posts_button.click()
+                time.sleep(5)  # 페이지가 로드될 시간을 주기 위해 대기
+                print("'전체보기' 버튼을 클릭했습니다.")
             else:
-                print("'목록열기' 버튼을 찾지 못했습니다.")
+                print("'전체보기' 버튼을 찾지 못했습니다.")
         except Exception as e:
-            print(f"'목록열기' 버튼 클릭에 실패했습니다: {e}")
+            print(f"'전체보기' 버튼 클릭에 실패했습니다: {e}")
             raise e
 
         # 게시글 수집
