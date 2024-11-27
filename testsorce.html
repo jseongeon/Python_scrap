@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상담 접수 폼</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .form-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            display: none;
+        }
+        .form-group.active {
+            display: block;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        .form-group textarea {
+            resize: vertical;
+            height: 100px;
+        }
+        .form-group button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            padding: 15px;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let currentStep = 0;
+            const steps = document.querySelectorAll('.form-group');
+            const nextButtons = document.querySelectorAll('.next-button');
+
+            function showStep(step) {
+                steps.forEach((stepElement, index) => {
+                    stepElement.classList.toggle('active', index === step);
+                });
+            }
+
+            nextButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    if (currentStep < steps.length - 1) {
+                        currentStep++;
+                        showStep(currentStep);
+                    }
+                });
+            });
+
+            // Initially show the first step
+            showStep(currentStep);
+        });
+    </script>
+</head>
+<body>
+    <div class="form-container">
+        <h2>상담 접수</h2>
+        <form action="/submit" method="post">
+            <div class="form-group active">
+                <label for="name">이름</label>
+                <input type="text" id="name" name="name" required>
+                <button type="button" class="next-button">다음</button>
+            </div>
+            <div class="form-group">
+                <label for="phone">전화번호</label>
+                <input type="tel" id="phone" name="phone" required>
+                <button type="button" class="next-button">다음</button>
+            </div>
+            <div class="form-group">
+                <label for="email">이메일</label>
+                <input type="email" id="email" name="email">
+                <button type="button" class="next-button">다음</button>
+            </div>
+            <div class="form-group">
+                <label for="type">상담 유형</label>
+                <select id="type" name="type">
+                    <option value="general">일반 문의</option>
+                    <option value="patent">특허 관련</option>
+                    <option value="trademark">상표 관련</option>
+                </select>
+                <button type="button" class="next-button">다음</button>
+            </div>
+            <div class="form-group">
+                <label for="message">문의 내용</label>
+                <textarea id="message" name="message" required></textarea>
+                <button type="submit">접수하기</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
