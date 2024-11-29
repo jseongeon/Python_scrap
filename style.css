@@ -1,0 +1,21 @@
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #ffffff;
+}
+
+.container {
+    text-align: center;
+}
+
+.title {
+    color: #1e90ff;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* 나머지 스타일 정의 */
